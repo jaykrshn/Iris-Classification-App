@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iris Classification Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .input-section, .image-section {
+            margin-bottom: 20px;
+        }
+        input[type="number"] {
+            padding: 8px;
+            margin: 5px;
+            width: calc(25% - 16px);
+            display: inline-block;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .image-section img {
+            width: 150px;
+            height: auto;
+            margin-right: 10px;
+        }
+        .image-section {
+            display: flex;
+            justify-content: space-between;
+        }
+        .prediction {
+            font-size: 20px;
+            color: #333;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Iris Flower Classification</h1>
+    <p>Predict the species of Iris flower based on its sepal and petal dimensions.</p>
+</header>
+
+<div class="container">
+    <!-- Image Section for Iris species -->
+    <div class="image-section">
+        <img src="/images/Iris-setosa.jpg" alt="Iris Setosa">
+        <img src="/images/Iris-versicolor.jpg" alt="Iris Versicolor">
+        <img src="/images/Iris-virginica.jpg" alt="Iris Virginica">
+    </div>
+
+    <!-- Input Form for Prediction -->
+    <form action="/predict" method="post">
+        <div class="input-section">
+            <label for="SepalLengthCm">Sepal Length (cm): </label>
+            <input type="number" step="any" name="SepalLengthCm" required>
+        </div>
+        <div class="input-section">
+            <label for="SepalWidthCm">Sepal Width (cm): </label>
+            <input type="number" step="any" name="SepalWidthCm" required>
+        </div>
+        <div class="input-section">
+            <label for="PetalLengthCm">Petal Length (cm): </label>
+            <input type="number" step="any" name="PetalLengthCm" required>
+        </div>
+        <div class="input-section">
+            <label for="PetalWidthCm">Petal Width (cm): </label>
+            <input type="number" step="any" name="PetalWidthCm" required>
+        </div>
+        
+        <div class="input-section">
+            <button type="submit">Predict</button>
+        </div>
+    </form>
+
+    <!-- Prediction result will be displayed here -->
+    {% if prediction_text %}
+        <div class="prediction">
+            <p>{{ prediction_text }}</p>
+        </div>
+    {% endif %}
+</div>
+
+</body>
+</html>
