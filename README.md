@@ -1,6 +1,6 @@
 # Iris Classification App
 
-This repository contains an app for classifying Iris species based on input features such as sepal length, sepal width, petal length, and petal width. The model is trained using a **Support Vector Classifier (SVC)** from `scikit-learn`, with hyperparameter optimization and experiment tracking via MLflow. The app is built using **FastAPI** and is containerized using Docker.
+This repository contains an app for classifying Iris species based on input features such as sepal length, sepal width, petal length, and petal width. The model is trained using a **Support Vector Classifier (SVC)** from `scikit-learn`, with hyperparameter optimization and experiment tracking via **MLflow**. The app is built using **FastAPI** and is containerized using **Docker**.
 
 ## Project Overview
 
