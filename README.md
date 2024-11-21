@@ -26,7 +26,7 @@ This repository contains an app for classifying Iris species based on input feat
 
 ### 1. Create a Python Environment
 
-Create a new Python environment (recommended using `venv` or `conda`) and install the required dependencies. 
+Create a new Python environment (recommended using `venv` or `conda`) and install the required dependencies. <br>
 *Note: Python 3.9.19 recommended*
 
 ```bash
