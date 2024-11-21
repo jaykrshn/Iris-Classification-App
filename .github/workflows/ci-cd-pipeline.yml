@@ -9,12 +9,12 @@ on:
       - master
 
 jobs:
-  # # Step 1: Checkout Code
-  # checkout:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout Code
-  #       uses: actions/checkout@v3
+  # Step 1: Checkout Code
+  checkout:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
   # # Step 2: Setup Python and Install Dependencies
   # setup:
