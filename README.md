@@ -35,7 +35,7 @@ python3 -m venv venv
 
 # Activate the virtual environment
 # On Windows
-heart_disease_env\Scripts\activate
+venv\Scripts\activate
 # On macOS/Linux
 source venv/bin/activate
 
