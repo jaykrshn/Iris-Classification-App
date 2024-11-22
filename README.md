@@ -76,8 +76,7 @@ After running the notebook, a trained model pickle file (`svc_model.pkl`) will b
 To test the FastAPI app, run the following command:
 
 ```bash
-cd app/
-python app.py
+python app/app.py
 ```
 
 Once the app is running, it will be accessible via the following URLs:

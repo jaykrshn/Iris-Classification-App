@@ -1,15 +1,23 @@
 import pytest
 from fastapi.testclient import TestClient
-from .app import app  # Assuming your FastAPI app is in 'app.py'
+from app.app import app  # Assuming your FastAPI app is in 'app.py'
 
 # Initialize the test client
 client = TestClient(app)
 
 # Test the home route (GET /)
+# def test_home():
+#     response = client.get("/")
+#     assert response.status_code == 200
+#     assert "home.html" in response.text  # Make sure the correct template is loaded
+
 def test_home():
     response = client.get("/")
     assert response.status_code == 200
-    assert "home.html" in response.text  # Make sure the correct template is loaded
+    # Check for specific content in the HTML
+    assert "<title>Iris Classification Prediction</title>" in response.text  # Example: Check the title tag
+    assert "<form" in response.text  # Example: Check for a form tag in the rendered HTML
+
 
 # Test the /predict route with form data (POST /predict)
 def test_predict():

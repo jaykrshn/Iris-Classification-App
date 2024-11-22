@@ -7,17 +7,21 @@ from starlette.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 
 # Load the model and scaler
-regmodel = pickle.load(open('reg_model.pkl', 'rb'))
-scalar = pickle.load(open('scaling.pkl', 'rb'))
+# regmodel = pickle.load(open('reg_model.pkl', 'rb'))
+# scalar = pickle.load(open('scaling.pkl', 'rb'))
+
+regmodel = pickle.load(open('app/reg_model.pkl', 'rb'))
+scalar = pickle.load(open('app/scaling.pkl', 'rb'))
 
 #Initialize Fastapi app
 app = FastAPI()
 
 # Set up Jinja2 for HTML rendering
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(directory="app/templates")
 
 # Mount the images directory as a static directory
-app.mount("/images", StaticFiles(directory="images"), name="images")
+# app.mount("/images", StaticFiles(directory="images"), name="images")
+app.mount("/images", StaticFiles(directory="app/images"), name="images")
 
 # Define input structure for prediction
 class PredictionRequest(BaseModel):
@@ -46,7 +50,7 @@ async def predict_form(
     )
 
     # Process the input data (scaling and prediction)
-    data = input_data.dict()  # Convert Pydantic model to dictionary
+    data = input_data.model_dump()  # Convert Pydantic model to dictionary
 
     # scaled_data = scalar.transform(np.array(list(data.values())).reshape(1, -1))
     scaled_data = np.array(list(data.values())).reshape(1, -1)
