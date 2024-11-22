@@ -47,7 +47,7 @@ jobs:
 
       - name: Run Unit Tests
         env:
-          PYTHONPATH: 
+          PYTHONPATH: .
         run: |
           pytest app/tests/test_app.py 
 
