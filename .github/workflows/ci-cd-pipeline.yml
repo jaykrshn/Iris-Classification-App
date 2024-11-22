@@ -46,8 +46,10 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run Unit Tests
+        env:
+          PYTHONPATH: 
         run: |
-          pytest app/tests/test_app.py  # Explicitly point to the test folder
+          pytest app/tests/test_app.py 
 
   # Step 4: Build Docker Image
   build:
