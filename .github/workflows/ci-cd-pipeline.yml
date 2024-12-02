@@ -61,7 +61,7 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          docker build -t ml-classifier:latest .
+          docker build -t iris-app:latest .
 
   # Step 5: Scan Docker Image for Vulnerabilities (Trivy)
   image-scan:
@@ -80,8 +80,8 @@ jobs:
 
       - name: Scan Docker Image
         run: |
-          docker build -t ml-classifier:latest .
-          trivy image ml-classifier:latest
+          docker build -t iris-app:latest .
+          trivy image iris-app:latest
 
   # # Step 6: Push Docker Image to DockerHub
   # push-image:
@@ -99,9 +99,9 @@ jobs:
 
   #     - name: Push Docker Image
   #       run: |
-  #         docker build -t ml-classifier:latest .
-  #         docker tag ml-classifier:latest ${{ secrets.DOCKER_USERNAME }}/ml-classifier:latest
-  #         docker push ${{ secrets.DOCKER_USERNAME }}/ml-classifier:latest
+  #         docker build -t iris-app:latest .
+  #         docker tag iris-app:latest ${{ secrets.DOCKER_USERNAME }}/iris-app:latest
+  #         docker push ${{ secrets.DOCKER_USERNAME }}/iris-app:latest
 
   # Step 6: Push Docker Image to AWS-ECR and deploy in AWS-EC2
   push-image:
