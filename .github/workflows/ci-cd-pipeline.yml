@@ -83,7 +83,27 @@ jobs:
           docker build -t ml-classifier:latest .
           trivy image ml-classifier:latest
 
-  # Step 6: Push Docker Image to DockerHub
+  # # Step 6: Push Docker Image to DockerHub
+  # push-image:
+  #   runs-on: ubuntu-latest
+  #   needs: image-scan
+  #   steps:
+  #     - name: Checkout Code
+  #       uses: actions/checkout@v3
+
+  #     - name: Login to DockerHub
+  #       uses: docker/login-action@v2
+  #       with:
+  #         username: ${{ secrets.DOCKER_USERNAME }}
+  #         password: ${{ secrets.DOCKER_PASSWORD }}
+
+  #     - name: Push Docker Image
+  #       run: |
+  #         docker build -t ml-classifier:latest .
+  #         docker tag ml-classifier:latest ${{ secrets.DOCKER_USERNAME }}/ml-classifier:latest
+  #         docker push ${{ secrets.DOCKER_USERNAME }}/ml-classifier:latest
+
+  # Step 6: Push Docker Image to AWS-ECR and deploy in AWS-EC2
   push-image:
     runs-on: ubuntu-latest
     needs: image-scan
@@ -91,14 +111,31 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Login to DockerHub
-        uses: docker/login-action@v2
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@0e613a0980cbf65ed5b322eb7a1e075d28913a83
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: Push Docker Image
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@62f4f872db3836360b72999f4b87f1ff13310f3a
+
+      - name: Push Docker Image to ECR
         run: |
-          docker build -t ml-classifier:latest .
-          docker tag ml-classifier:latest ${{ secrets.DOCKER_USERNAME }}/ml-classifier:latest
-          docker push ${{ secrets.DOCKER_USERNAME }}/ml-classifier:latest
+          aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
+          docker tag iris-app:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/iris-app:latest
+          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/iris-app:latest  
+
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }} 
+          username: ${{ secrets.EC2_USERNAME }} 
+          key: ${{ secrets.EC2_SSH_KEY }}  
+          script: |
+            docker pull ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/iris-app:latest
+            docker stop iris-app || true # In case the container doesn't exist yet
+            docker rm iris-app || true
+            docker run -d -p 80:8000 --name iris-app ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/iris-app:latest 
