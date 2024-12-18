@@ -142,6 +142,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 ```
 
-This README is structured similarly to your previous one and tailored for your Iris Classification App. You can copy and paste this into your `README.md` file.
-
-
